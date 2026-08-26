@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+<title>给你的一封月光情书</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<audio id="bgm" src="music/music.wav" loop preload="auto" autoplay playsinline></audio>
+<canvas id="stars"></canvas>
+<canvas id="particles"></canvas>
+<canvas id="fireworks"></canvas>
+<canvas id="climax"></canvas>
+<canvas id="roseFx"></canvas>
+<div class="moon"></div>
+<div class="vignette"></div>
+
+<div class="topbar">
+  <div class="progress"><span id="bar"></span></div>
+  <button class="music" id="music"><i class="dot"></i><span>开启音乐</span></button>
+</div>
+
+<main class="app">
+  <section class="page active" id="p0">
+    <div class="card">
+      <div class="badge">A LETTER WRITTEN IN MOONLIGHT</div>
+      <h1 class="gradient">正在为你写一封月光情书</h1>
+      <p class="sub">不是很吵的惊喜，而是一点一点靠近你的温柔。</p>
+      <div class="loader">
+        <div class="track"><div class="fill" id="fill"></div></div>
+        <div class="loaderText" id="loaderText">正在收集星光、花瓣和心跳...</div>
+      </div>
+      <div class="btns"><button id="start" style="display:none">打开这封情书</button></div>
+    </div>
+  </section>
+
+  <section class="page" id="p1">
+    <div class="card">
+      <div class="badge">CHAPTER 01 · 遇见</div>
+      <h1 class="gradient">有些遇见，像月光落在心上</h1>
+      <div class="type" id="type1"></div>
+      <p class="sub">我原本以为这只是普通的一天，直到你出现，普通也开始有了光。</p>
+      <div class="btns"><button data-next="2" class="next">继续</button></div>
+    </div>
+  </section>
+
+  <section class="page" id="p2">
+    <div class="card">
+      <div class="badge">CHAPTER 02 · 靠近</div>
+      <h1 class="gradient">把想念写成一封信</h1>
+      <div class="letter">
+        <p>有些话，我练习了很多遍。</p>
+        <p>怕太突然，也怕不够认真；怕你没准备好，也怕我一直不说。</p>
+        <p>可越是想藏起来，越会在看见你的时候，悄悄变得明显。</p>
+        <p>所以今天，我想用这段小小的页面，把心里的话慢慢说给你听。</p>
+        <div class="signature">—— 给特别的你</div>
+      </div>
+      <div class="btns"><button data-next="3" class="next">看看星光的答案</button></div>
+    </div>
+  </section>
+
+  <section class="page" id="p3">
+    <div class="card">
+      <div class="badge">CHAPTER 03 · 心动</div>
+      <h1 class="gradient">让星光替我说答案</h1>
+      <p class="sub">星光会先变成爱心、名字和 LOVE，然后进入一场电影感月光银河告白。</p>
+      <div class="scene">
+        <svg viewBox="0 0 900 520" class="romance-svg" id="romanceSvg">
+          <defs>
+            <radialGradient id="cleanMoon" cx="36%" cy="32%" r="68%">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="38%" stop-color="#fff6d2"/>
+              <stop offset="72%" stop-color="#ffd98e"/>
+              <stop offset="100%" stop-color="rgba(255,217,142,.10)"/>
+            </radialGradient>
+            <radialGradient id="cleanHalo" cx="50%" cy="50%" r="62%">
+              <stop offset="0%" stop-color="rgba(255,255,255,.55)"/>
+              <stop offset="45%" stop-color="rgba(255,217,142,.20)"/>
+              <stop offset="100%" stop-color="rgba(255,217,142,0)"/>
+            </radialGradient>
+            <radialGradient id="galaxyCore" cx="50%" cy="50%" r="58%">
+              <stop offset="0%" stop-color="rgba(255,255,255,.75)"/>
+              <stop offset="28%" stop-color="rgba(255,216,142,.34)"/>
+              <stop offset="58%" stop-color="rgba(255,126,182,.20)"/>
+              <stop offset="100%" stop-color="rgba(148,226,255,0)"/>
+            </radialGradient>
+            <linearGradient id="auroraA" x1="0" x2="1">
+              <stop offset="0%" stop-color="rgba(255,126,182,0)"/>
+              <stop offset="42%" stop-color="rgba(255,126,182,.72)"/>
+              <stop offset="100%" stop-color="rgba(183,232,255,0)"/>
+            </linearGradient>
+            <linearGradient id="auroraB" x1="0" x2="1">
+              <stop offset="0%" stop-color="rgba(183,232,255,0)"/>
+              <stop offset="50%" stop-color="rgba(183,232,255,.66)"/>
+              <stop offset="100%" stop-color="rgba(255,217,142,0)"/>
+            </linearGradient>
+          </defs>
+
+          <!-- giant moon and halo -->
+          <circle class="cleanHalo" cx="450" cy="160" r="218" fill="url(#cleanHalo)"/>
+          <circle class="cleanMoon" cx="450" cy="160" r="128" fill="url(#cleanMoon)"/>
+
+          <!-- soft aurora curtains, no random lower strokes -->
+          <path class="aurora aurora1" d="M40 310 C190 210 300 250 430 200 C580 140 700 230 860 150 L860 255 C710 342 580 250 430 315 C286 376 180 318 40 410Z" fill="url(#auroraA)"/>
+          <path class="aurora aurora2" d="M20 372 C170 270 316 318 455 254 C602 188 720 310 880 222 L880 326 C720 404 600 302 455 374 C314 444 172 384 20 480Z" fill="url(#auroraB)"/>
+
+          <!-- clean spiral galaxy -->
+          <ellipse class="galaxyGlow" cx="450" cy="306" rx="315" ry="118" fill="url(#galaxyCore)"/>
+          <path class="cleanRibbon r1" d="M150 326 C248 244 356 224 455 274 C560 328 650 320 760 236"/>
+          <path class="cleanRibbon r2" d="M122 370 C260 288 376 294 478 348 C590 408 710 374 810 284"/>
+          <path class="cleanRibbon r3" d="M178 274 C310 178 440 180 560 236 C660 284 730 244 800 176"/>
+          <path class="cleanRibbon r4" d="M265 330 C358 290 450 292 536 326 C608 354 684 344 742 302"/>
+
+          <!-- moon reflection, neat and symmetric -->
+          <path class="reflection ref1" d="M332 430 C396 410 504 410 568 430"/>
+          <path class="reflection ref2" d="M282 462 C370 438 530 438 618 462"/>
+          <path class="reflection ref3" d="M230 492 C350 462 550 462 670 492"/>
+
+          <!-- meteors -->
+          <path class="cleanMeteor cm1" d="M145 88 L270 150"/>
+          <path class="cleanMeteor cm2" d="M620 70 L790 154"/>
+          <path class="cleanMeteor cm3" d="M178 210 L320 280"/>
+          <path class="cleanMeteor cm4" d="M658 286 L818 366"/>
+
+          <!-- constellation dots only, no heart/branch shapes -->
+          <circle class="cleanDot d1" cx="170" cy="132" r="5"/>
+          <circle class="cleanDot d2" cx="250" cy="105" r="4"/>
+          <circle class="cleanDot d3" cx="738" cy="112" r="5"/>
+          <circle class="cleanDot d4" cx="785" cy="258" r="4"/>
+          <circle class="cleanDot d5" cx="142" cy="345" r="5"/>
+          <circle class="cleanDot d6" cx="462" cy="42" r="4"/>
+          <circle class="cleanDot d7" cx="710" cy="420" r="4"/>
+          <circle class="cleanDot d8" cx="260" cy="418" r="4"/>
+        </svg>
+        <div class="scene-caption" id="caption">点击按钮，星光会开始告白</div>
+      </div>
+      <div class="btns">
+        <button id="answer">让星光组成答案</button>
+        <button id="nameBtn" class="secondary">设置她/他的名字</button>
+        <button data-next="4" class="next secondary">读最后一段</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="p4">
+    <div class="card">
+      <div class="badge">CHAPTER 04 · 告白</div>
+      <h1 class="gradient">我喜欢你</h1>
+      <div class="letter">
+        <p>不是一时兴起，也不是被氛围推着说出口。</p>
+        <p>是我在很多普通瞬间里，越来越确定的一件事。</p>
+        <p>我想认真靠近你，想听你讲今天发生的小事，想和你一起把平凡日子过得发光。</p>
+        <p><b>所以，可以让我以喜欢你的身份，陪你走下一段路吗？</b></p>
+      </div>
+      <div class="btns">
+        <button id="yes">我愿意听你说</button>
+        <button id="wait" class="secondary">再给我一点时间</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="p5">
+    <div class="card">
+      <h1 class="gradient final-title">那就从今天开始吧</h1>
+      <p class="final-text">愿以后的日子里，月亮为我们照亮，银河替我作证，花瓣和星光都慢慢走向你。</p>
+      <div class="btns">
+        <button id="again">再放一次烟花</button>
+        <button class="secondary" onclick="location.reload()">重新看一遍</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

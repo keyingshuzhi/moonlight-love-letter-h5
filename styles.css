@@ -1,0 +1,633 @@
+
+:root{
+  --pink:#ff7eb6;
+  --rose:#ff4f8b;
+  --soft:#fff3f8;
+  --gold:#ffd98e;
+  --blue:#b7e8ff;
+  --bg:#070716;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#fff;background:#070716}
+body{
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255,216,150,.20), transparent 18%),
+    radial-gradient(circle at 25% 30%, rgba(255,126,182,.20), transparent 26%),
+    radial-gradient(circle at 78% 68%, rgba(183,232,255,.12), transparent 28%),
+    linear-gradient(145deg,#070716,#160821 46%,#26091e);
+}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+#stars{z-index:1}
+#particles{z-index:2;pointer-events:none}
+#fireworks{z-index:5;pointer-events:none}
+.vignette{position:fixed;inset:0;z-index:3;background:radial-gradient(circle at center,transparent 45%,rgba(0,0,0,.58));pointer-events:none}
+
+.moon{
+  position:fixed;right:8vw;top:7vh;z-index:3;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle at 36% 34%,#fff 0,#fff8d8 30%,#ffd98e 58%,rgba(255,217,142,.12) 70%);
+  box-shadow:0 0 44px rgba(255,217,142,.62),0 0 120px rgba(255,126,182,.12);
+  opacity:.9;
+}
+.moon:after{
+  content:"";position:absolute;left:-22px;top:9px;width:118px;height:118px;border-radius:50%;
+  background:#14081d;opacity:.42;
+}
+
+.petal{
+  position:fixed;top:-40px;z-index:4;width:12px;height:20px;border-radius:80% 0 80% 0;
+  background:linear-gradient(135deg,rgba(255,150,200,.95),rgba(255,255,255,.45));
+  filter:drop-shadow(0 0 10px rgba(255,126,182,.5));
+  animation:fall linear forwards;
+  pointer-events:none;
+}
+@keyframes fall{to{transform:translate3d(var(--dx),110vh,0) rotate(680deg);opacity:.06}}
+
+.app{position:relative;z-index:6;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:22px}
+.page{
+  display:none;width:min(760px,93vw);min-height:min(690px,84vh);align-items:center;justify-content:center;
+  text-align:center;animation:pageIn .9s ease both;
+}
+.page.active{display:flex}
+@keyframes pageIn{from{opacity:0;transform:translateY(24px) scale(.98);filter:blur(8px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+
+.card{
+  width:100%;padding:36px 30px;border-radius:34px;
+  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.055));
+  border:1px solid rgba(255,255,255,.22);
+  backdrop-filter:blur(22px);
+  box-shadow:0 24px 100px rgba(0,0,0,.35), inset 0 0 44px rgba(255,255,255,.06);
+}
+.badge{
+  display:inline-flex;margin-bottom:20px;padding:8px 14px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.75);font-size:12px;letter-spacing:.12em;
+}
+h1{
+  font-size:clamp(34px,7.2vw,70px);line-height:1.08;letter-spacing:.05em;margin-bottom:20px;
+  text-shadow:0 0 32px rgba(255,126,182,.42);
+}
+.gradient{
+  background:linear-gradient(90deg,#fff,#ffe0ef,#ff7eb6,#ffd98e,#fff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;background-size:230% auto;
+  animation:shine 5s linear infinite;
+}
+@keyframes shine{to{background-position:230% center}}
+.sub{font-size:clamp(15px,3.5vw,19px);line-height:1.9;color:rgba(255,255,255,.76);max-width:650px;margin:0 auto}
+
+.btns{margin-top:28px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+button{
+  border:0;cursor:pointer;border-radius:999px;padding:14px 22px;color:#fff;font-weight:800;font-size:15px;
+  background:linear-gradient(135deg,#ff4f8b,#ff9ac8);box-shadow:0 16px 42px rgba(255,79,139,.34);transition:.25s ease;
+}
+button:hover{transform:translateY(-2px);box-shadow:0 20px 52px rgba(255,79,139,.46)}
+button.secondary{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.24);box-shadow:none}
+
+.topbar{position:fixed;left:16px;right:16px;top:16px;z-index:10;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.topbar>*{pointer-events:auto}
+.progress{width:min(230px,48vw);height:8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7eb6,#ffd98e);transition:.45s ease}
+.music{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);box-shadow:none;padding:9px 13px;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#aaa}
+.music.on .dot{background:#9cffd7;box-shadow:0 0 18px #9cffd7;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.5);opacity:.65}}
+
+.loader{width:min(530px,88vw);margin:22px auto 0}
+.track{height:10px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;border:1px solid rgba(255,255,255,.18)}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#ff7eb6,#ffd98e,#b7e8ff);border-radius:999px;box-shadow:0 0 28px rgba(255,126,182,.5)}
+.loaderText{margin-top:14px;color:rgba(255,255,255,.72);font-size:14px}
+
+.type{min-height:110px;font-size:clamp(18px,4.2vw,29px);line-height:1.8;font-weight:700;margin:18px auto 4px;max-width:660px}
+.cursor{display:inline-block;width:2px;height:1em;background:#fff;margin-left:5px;vertical-align:-2px;animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.letter{
+  position:relative;text-align:left;padding:30px 26px;border-radius:24px;
+  background:linear-gradient(145deg,rgba(255,243,248,.16),rgba(255,255,255,.055));
+  border:1px solid rgba(255,255,255,.18);
+}
+.letter:before{
+  content:"";position:absolute;left:22px;right:22px;top:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);
+}
+.letter p{font-size:clamp(15px,3.4vw,18px);line-height:2;color:rgba(255,255,255,.86);margin-bottom:10px}
+.signature{text-align:right;color:#ffe0ef;font-weight:800;margin-top:14px}
+
+.scene{width:min(660px,92vw);height:360px;margin:14px auto;position:relative}
+.romance-svg{width:100%;height:100%;overflow:visible}
+.scene-caption{
+  position:absolute;left:50%;bottom:4px;transform:translateX(-50%);
+  padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.82);font-size:14px;white-space:nowrap;backdrop-filter:blur(10px);
+}
+.roseLine,.moonLine,.riverLine{
+  fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:900;stroke-dashoffset:900;
+}
+.roseLine{stroke:#ff9ac8;stroke-width:5;filter:drop-shadow(0 0 9px rgba(255,126,182,.6))}
+.moonLine{stroke:#fff3c6;stroke-width:6;filter:drop-shadow(0 0 10px rgba(255,217,142,.62))}
+.riverLine{stroke:rgba(183,232,255,.85);stroke-width:4;filter:drop-shadow(0 0 9px rgba(183,232,255,.45))}
+.svg-animate .roseLine,.svg-animate .moonLine,.svg-animate .riverLine{animation:draw 3s ease forwards}
+.svg-animate .roseLine.r2{animation-delay:.6s}
+.svg-animate .roseLine.r3{animation-delay:1.1s}
+.svg-animate .moonLine{animation-delay:.2s}
+.svg-animate .riverLine{animation-delay:1s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.svg-star{opacity:0;fill:#fff7c9;filter:drop-shadow(0 0 12px rgba(255,217,142,.8))}
+.svg-animate .svg-star{animation:starPop 1.4s ease infinite}
+.svg-animate .s2{animation-delay:.4s}
+.svg-animate .s3{animation-delay:.8s}
+@keyframes starPop{0%,100%{opacity:.18;transform:scale(.82)}50%{opacity:1;transform:scale(1.14)}}
+
+.final-title{font-size:clamp(38px,7.6vw,76px)}
+.final-text{font-size:clamp(17px,4vw,24px);line-height:1.8;color:rgba(255,255,255,.86)}
+.toast{
+  position:fixed;left:50%;bottom:26px;z-index:20;transform:translateX(-50%) translateY(30px);opacity:0;
+  padding:12px 18px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(12px);
+  transition:.32s ease;color:#fff;font-size:14px;white-space:nowrap;pointer-events:none
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:640px){
+  .card{padding:28px 18px;border-radius:26px}
+  .page{min-height:82vh}
+  .moon{width:78px;height:78px;right:7vw;top:8vh}
+  .music span{display:none}
+  .scene{height:300px}
+}
+
+/* V13 grand galaxy climax */
+.moon{
+  width:150px;height:150px;
+  box-shadow:
+    0 0 50px rgba(255,217,142,.78),
+    0 0 160px rgba(255,217,142,.30),
+    0 0 260px rgba(255,126,182,.16);
+  animation:moonBreath 5.2s ease-in-out infinite;
+}
+@keyframes moonBreath{
+  0%,100%{transform:scale(1);filter:saturate(1)}
+  50%{transform:scale(1.06);filter:saturate(1.25)}
+}
+.scene{height:420px}
+.romance-svg{filter:drop-shadow(0 0 18px rgba(255,126,182,.22))}
+.bigMoon{
+  fill:url(#bigMoonGrad);
+  opacity:0;
+  filter:drop-shadow(0 0 45px rgba(255,217,142,.72));
+  transform-origin:450px 180px;
+}
+.galaxyBand{
+  fill:none;
+  stroke-linecap:round;
+  stroke-dasharray:1200;
+  stroke-dashoffset:1200;
+  opacity:0;
+}
+.galaxyBand.g1{stroke:rgba(255,255,255,.82);stroke-width:9;filter:drop-shadow(0 0 22px rgba(255,255,255,.42))}
+.galaxyBand.g2{stroke:rgba(255,126,182,.74);stroke-width:7;filter:drop-shadow(0 0 22px rgba(255,126,182,.50))}
+.galaxyBand.g3{stroke:rgba(183,232,255,.72);stroke-width:6;filter:drop-shadow(0 0 22px rgba(183,232,255,.44))}
+.nebula{
+  opacity:0;
+  transform-origin:450px 265px;
+}
+.meteor{
+  opacity:0;
+  stroke:#fff7c9;
+  stroke-width:4;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 12px rgba(255,217,142,.9));
+}
+.grandRose{
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1200;
+  stroke-dashoffset:1200;
+  opacity:0;
+  filter:drop-shadow(0 0 18px rgba(255,126,182,.68));
+}
+.grandRose.rp1{stroke:#ff7eb6;stroke-width:6}
+.grandRose.rp2{stroke:#ffd98e;stroke-width:4.5}
+.grandRose.stem{stroke:#9cffd7;stroke-width:5;opacity:0}
+.galaxyStar{opacity:0;fill:#fff7c9;filter:drop-shadow(0 0 12px rgba(255,217,142,.9))}
+.svg-animate .bigMoon{
+  animation:bigMoonRise 2.8s cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes bigMoonRise{
+  0%{opacity:0;transform:translateY(70px) scale(.72)}
+  100%{opacity:.96;transform:translateY(0) scale(1)}
+}
+.svg-animate .nebula{
+  animation:nebulaOpen 3.2s ease 1s forwards;
+}
+@keyframes nebulaOpen{
+  0%{opacity:0;transform:scale(.55) rotate(-8deg)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+.svg-animate .galaxyBand{
+  animation:galaxyDraw 4.4s ease forwards;
+}
+.svg-animate .galaxyBand.g2{animation-delay:.45s}
+.svg-animate .galaxyBand.g3{animation-delay:.9s}
+@keyframes galaxyDraw{
+  0%{opacity:0;stroke-dashoffset:1200}
+  12%{opacity:1}
+  100%{opacity:1;stroke-dashoffset:0}
+}
+.svg-animate .meteor{
+  animation:meteorFly 1.8s ease forwards;
+}
+.svg-animate .m1{animation-delay:1.2s}
+.svg-animate .m2{animation-delay:1.8s}
+.svg-animate .m3{animation-delay:2.45s}
+.svg-animate .m4{animation-delay:3s}
+@keyframes meteorFly{
+  0%{opacity:0;stroke-dashoffset:120;transform:translate(-90px,-40px)}
+  15%{opacity:1}
+  100%{opacity:0;stroke-dashoffset:0;transform:translate(130px,70px)}
+}
+.svg-animate .grandRose{
+  animation:grandRoseDraw 4.2s ease 3.1s forwards;
+}
+.svg-animate .grandRose.rp2{animation-delay:3.7s}
+.svg-animate .grandRose.stem{animation-delay:4.2s}
+@keyframes grandRoseDraw{
+  0%{opacity:0;stroke-dashoffset:1200}
+  10%{opacity:1}
+  100%{opacity:1;stroke-dashoffset:0}
+}
+.svg-animate .galaxyStar{
+  animation:galaxyStarPop 2s ease infinite;
+}
+.svg-animate .gs2{animation-delay:.3s}
+.svg-animate .gs3{animation-delay:.6s}
+.svg-animate .gs4{animation-delay:.9s}
+.svg-animate .gs5{animation-delay:1.2s}
+@keyframes galaxyStarPop{
+  0%,100%{opacity:.16;transform:scale(.75)}
+  50%{opacity:1;transform:scale(1.18)}
+}
+@media(max-width:640px){
+  .scene{height:340px}
+  .moon{width:92px;height:92px}
+}
+
+
+/* V14 cinematic galaxy climax */
+#climax{
+  z-index:4;
+  opacity:0;
+  transition:opacity 1.2s ease;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+#climax.show{opacity:1}
+body.climax-on{
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255,225,160,.30), transparent 20%),
+    radial-gradient(circle at 36% 42%, rgba(255,79,139,.32), transparent 34%),
+    radial-gradient(circle at 72% 56%, rgba(108,211,255,.22), transparent 36%),
+    linear-gradient(145deg,#05030e,#16051f 42%,#280817 100%);
+}
+body.climax-on .moon{
+  width:190px;height:190px;right:6vw;top:5vh;
+  box-shadow:
+    0 0 70px rgba(255,232,170,.95),
+    0 0 200px rgba(255,217,142,.40),
+    0 0 360px rgba(255,126,182,.24);
+}
+.scene{height:460px}
+.cinematicMoon{
+  opacity:0;
+  transform-origin:450px 170px;
+  filter:drop-shadow(0 0 70px rgba(255,222,160,.86));
+}
+.moonHalo{
+  opacity:0;
+  transform-origin:450px 170px;
+  mix-blend-mode:screen;
+}
+.nebulaCloud{
+  opacity:0;
+  filter:blur(.2px) drop-shadow(0 0 34px rgba(255,126,182,.45));
+  transform-origin:450px 282px;
+}
+.galaxyRibbon{
+  fill:none;
+  stroke-linecap:round;
+  stroke-dasharray:1500;
+  stroke-dashoffset:1500;
+  opacity:0;
+  filter:drop-shadow(0 0 28px rgba(255,255,255,.35));
+}
+.galaxyRibbon.a{stroke:rgba(255,255,255,.88);stroke-width:10}
+.galaxyRibbon.b{stroke:rgba(255,126,182,.82);stroke-width:8}
+.galaxyRibbon.c{stroke:rgba(148,226,255,.78);stroke-width:7}
+.galaxyRibbon.d{stroke:rgba(255,217,142,.72);stroke-width:5}
+.starWaterfall{
+  opacity:0;
+  stroke:rgba(255,255,255,.62);
+  stroke-width:2;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 10px rgba(255,255,255,.7));
+}
+.bigMeteor{
+  opacity:0;
+  stroke:#fff7cc;
+  stroke-width:6;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 16px rgba(255,217,142,.95));
+}
+.roseNebula{
+  opacity:0;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:1600;
+  stroke-dashoffset:1600;
+  filter:drop-shadow(0 0 26px rgba(255,126,182,.78));
+}
+.roseNebula.outer{stroke:#ff7eb6;stroke-width:8}
+.roseNebula.mid{stroke:#ffd3e5;stroke-width:6}
+.roseNebula.inner{stroke:#ffd98e;stroke-width:5}
+.roseNebula.stem{stroke:#a8ffd9;stroke-width:6}
+.roseGlow{
+  opacity:0;
+  transform-origin:520px 300px;
+  mix-blend-mode:screen;
+}
+.constellationDot{opacity:0;fill:#fff7cc;filter:drop-shadow(0 0 14px rgba(255,217,142,.9))}
+.svg-animate .cinematicMoon{
+  animation:cinematicMoonIn 3.2s cubic-bezier(.18,.82,.22,1) forwards;
+}
+.svg-animate .moonHalo{
+  animation:haloPulse 4s ease 1.1s infinite;
+}
+@keyframes cinematicMoonIn{
+  0%{opacity:0;transform:translateY(92px) scale(.55)}
+  70%{opacity:1;transform:translateY(-8px) scale(1.05)}
+  100%{opacity:.98;transform:translateY(0) scale(1)}
+}
+@keyframes haloPulse{
+  0%,100%{opacity:.20;transform:scale(.92)}
+  50%{opacity:.72;transform:scale(1.08)}
+}
+.svg-animate .nebulaCloud{
+  animation:nebulaBloom 4.6s ease .65s forwards;
+}
+@keyframes nebulaBloom{
+  0%{opacity:0;transform:scale(.42) rotate(-10deg)}
+  70%{opacity:.88;transform:scale(1.05) rotate(2deg)}
+  100%{opacity:.76;transform:scale(1) rotate(0)}
+}
+.svg-animate .galaxyRibbon{
+  animation:ribbonDraw 5.2s cubic-bezier(.2,.7,.18,1) forwards;
+}
+.svg-animate .galaxyRibbon.b{animation-delay:.45s}
+.svg-animate .galaxyRibbon.c{animation-delay:.9s}
+.svg-animate .galaxyRibbon.d{animation-delay:1.3s}
+@keyframes ribbonDraw{
+  0%{opacity:0;stroke-dashoffset:1500}
+  14%{opacity:1}
+  100%{opacity:1;stroke-dashoffset:0}
+}
+.svg-animate .bigMeteor{
+  animation:bigMeteorFly 1.9s ease forwards;
+}
+.svg-animate .bm1{animation-delay:1.1s}
+.svg-animate .bm2{animation-delay:1.7s}
+.svg-animate .bm3{animation-delay:2.4s}
+.svg-animate .bm4{animation-delay:3.05s}
+.svg-animate .bm5{animation-delay:3.7s}
+@keyframes bigMeteorFly{
+  0%{opacity:0;transform:translate(-150px,-76px);stroke-dasharray:0 150}
+  16%{opacity:1;stroke-dasharray:110 150}
+  100%{opacity:0;transform:translate(190px,96px);stroke-dasharray:150 150}
+}
+.svg-animate .starWaterfall{
+  animation:waterfall 3.8s ease-in-out infinite;
+}
+.svg-animate .sw2{animation-delay:.4s}
+.svg-animate .sw3{animation-delay:.8s}
+.svg-animate .sw4{animation-delay:1.2s}
+@keyframes waterfall{
+  0%{opacity:0;transform:translateY(-35px)}
+  30%{opacity:.85}
+  100%{opacity:0;transform:translateY(95px)}
+}
+.svg-animate .roseGlow{
+  animation:roseGlowIn 3.2s ease 3.8s forwards, roseGlowPulse 2.4s ease 7s infinite;
+}
+@keyframes roseGlowIn{
+  from{opacity:0;transform:scale(.45)}
+  to{opacity:.85;transform:scale(1)}
+}
+@keyframes roseGlowPulse{
+  0%,100%{transform:scale(.96);opacity:.55}
+  50%{transform:scale(1.1);opacity:.95}
+}
+.svg-animate .roseNebula{
+  animation:roseNebulaDraw 4.8s cubic-bezier(.2,.8,.18,1) 4.3s forwards;
+}
+.svg-animate .roseNebula.mid{animation-delay:4.85s}
+.svg-animate .roseNebula.inner{animation-delay:5.35s}
+.svg-animate .roseNebula.stem{animation-delay:5.75s}
+@keyframes roseNebulaDraw{
+  0%{opacity:0;stroke-dashoffset:1600}
+  12%{opacity:1}
+  100%{opacity:1;stroke-dashoffset:0}
+}
+.svg-animate .constellationDot{
+  animation:constellationPop 2s ease infinite;
+}
+.svg-animate .cd2{animation-delay:.22s}
+.svg-animate .cd3{animation-delay:.44s}
+.svg-animate .cd4{animation-delay:.66s}
+.svg-animate .cd5{animation-delay:.88s}
+.svg-animate .cd6{animation-delay:1.1s}
+@keyframes constellationPop{
+  0%,100%{opacity:.18;transform:scale(.65)}
+  50%{opacity:1;transform:scale(1.28)}
+}
+@media(max-width:640px){
+  .scene{height:370px}
+  body.climax-on .moon{width:118px;height:118px}
+}
+
+
+/* V15 clean luxury galaxy: no heart outline, no casual lower branches */
+.cleanMoon{
+  opacity:0;
+  transform-origin:450px 160px;
+  filter:drop-shadow(0 0 75px rgba(255,222,160,.88));
+}
+.cleanHalo{
+  opacity:0;
+  transform-origin:450px 160px;
+  mix-blend-mode:screen;
+}
+.aurora{
+  opacity:0;
+  transform-origin:450px 310px;
+  filter:blur(.2px) drop-shadow(0 0 28px rgba(255,126,182,.30));
+  mix-blend-mode:screen;
+}
+.galaxyGlow{
+  opacity:0;
+  transform-origin:450px 306px;
+  mix-blend-mode:screen;
+}
+.cleanRibbon{
+  fill:none;
+  stroke-linecap:round;
+  stroke-dasharray:1200;
+  stroke-dashoffset:1200;
+  opacity:0;
+  filter:drop-shadow(0 0 22px rgba(255,255,255,.34));
+}
+.cleanRibbon.r1{stroke:rgba(255,255,255,.86);stroke-width:8}
+.cleanRibbon.r2{stroke:rgba(255,126,182,.74);stroke-width:7}
+.cleanRibbon.r3{stroke:rgba(148,226,255,.70);stroke-width:6}
+.cleanRibbon.r4{stroke:rgba(255,217,142,.70);stroke-width:5}
+.reflection{
+  fill:none;
+  stroke:rgba(255,245,205,.56);
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-dasharray:520;
+  stroke-dashoffset:520;
+  opacity:0;
+  filter:drop-shadow(0 0 14px rgba(255,217,142,.45));
+}
+.cleanMeteor{
+  opacity:0;
+  stroke:#fff7cc;
+  stroke-width:5;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 16px rgba(255,217,142,.92));
+}
+.cleanDot{
+  opacity:0;
+  fill:#fff7cc;
+  filter:drop-shadow(0 0 14px rgba(255,217,142,.9));
+}
+.svg-animate .cleanMoon{
+  animation:cleanMoonIn 3s cubic-bezier(.18,.82,.22,1) forwards;
+}
+.svg-animate .cleanHalo{
+  animation:cleanHaloPulse 4s ease 1s infinite;
+}
+@keyframes cleanMoonIn{
+  0%{opacity:0;transform:translateY(85px) scale(.58)}
+  68%{opacity:1;transform:translateY(-6px) scale(1.04)}
+  100%{opacity:.98;transform:translateY(0) scale(1)}
+}
+@keyframes cleanHaloPulse{
+  0%,100%{opacity:.18;transform:scale(.92)}
+  50%{opacity:.70;transform:scale(1.08)}
+}
+.svg-animate .aurora1{animation:auroraIn 4.2s ease .7s forwards, auroraFloat 6s ease-in-out 4.9s infinite}
+.svg-animate .aurora2{animation:auroraIn 4.2s ease 1.1s forwards, auroraFloat 6.5s ease-in-out 5.2s infinite reverse}
+@keyframes auroraIn{
+  0%{opacity:0;transform:translateY(34px) scale(.92)}
+  100%{opacity:.78;transform:translateY(0) scale(1)}
+}
+@keyframes auroraFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-10px) scale(1.025)}
+}
+.svg-animate .galaxyGlow{
+  animation:galaxyGlowIn 3.2s ease 1.4s forwards, galaxyGlowPulse 4s ease 4.6s infinite;
+}
+@keyframes galaxyGlowIn{
+  from{opacity:0;transform:scale(.62)}
+  to{opacity:.88;transform:scale(1)}
+}
+@keyframes galaxyGlowPulse{
+  0%,100%{opacity:.58;transform:scale(.97)}
+  50%{opacity:.92;transform:scale(1.05)}
+}
+.svg-animate .cleanRibbon{
+  animation:cleanRibbonDraw 4.6s cubic-bezier(.2,.7,.18,1) forwards;
+}
+.svg-animate .cleanRibbon.r2{animation-delay:.35s}
+.svg-animate .cleanRibbon.r3{animation-delay:.7s}
+.svg-animate .cleanRibbon.r4{animation-delay:1.05s}
+@keyframes cleanRibbonDraw{
+  0%{opacity:0;stroke-dashoffset:1200}
+  14%{opacity:1}
+  100%{opacity:1;stroke-dashoffset:0}
+}
+.svg-animate .reflection{animation:reflectionDraw 3.4s ease 2.2s forwards}
+.svg-animate .ref2{animation-delay:2.55s}
+.svg-animate .ref3{animation-delay:2.9s}
+@keyframes reflectionDraw{
+  0%{opacity:0;stroke-dashoffset:520}
+  100%{opacity:.72;stroke-dashoffset:0}
+}
+.svg-animate .cleanMeteor{animation:cleanMeteorFly 1.85s ease forwards}
+.svg-animate .cm1{animation-delay:1.05s}
+.svg-animate .cm2{animation-delay:1.55s}
+.svg-animate .cm3{animation-delay:2.2s}
+.svg-animate .cm4{animation-delay:2.85s}
+@keyframes cleanMeteorFly{
+  0%{opacity:0;transform:translate(-140px,-70px);stroke-dasharray:0 150}
+  15%{opacity:1;stroke-dasharray:112 150}
+  100%{opacity:0;transform:translate(180px,92px);stroke-dasharray:150 150}
+}
+.svg-animate .cleanDot{animation:cleanDotPop 2s ease infinite}
+.svg-animate .d2{animation-delay:.2s}
+.svg-animate .d3{animation-delay:.4s}
+.svg-animate .d4{animation-delay:.6s}
+.svg-animate .d5{animation-delay:.8s}
+.svg-animate .d6{animation-delay:1s}
+.svg-animate .d7{animation-delay:1.2s}
+.svg-animate .d8{animation-delay:1.4s}
+@keyframes cleanDotPop{
+  0%,100%{opacity:.18;transform:scale(.65)}
+  50%{opacity:1;transform:scale(1.22)}
+}
+
+
+/* V16 rose foreground visibility fix */
+#roseFx{
+  z-index:7;
+  opacity:0;
+  transition:opacity .75s ease;
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+#roseFx.show{opacity:1}
+body.rose-focus #climax{opacity:.30}
+body.rose-focus #particles{z-index:8}
+body.rose-focus .moon{opacity:.48;filter:blur(.2px)}
+body.rose-focus .scene:before{
+  content:"";
+  position:absolute;
+  inset:2% 4%;
+  border-radius:40px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(0,0,0,.56) 0%, rgba(0,0,0,.36) 32%, rgba(0,0,0,.08) 66%, transparent 100%),
+    radial-gradient(circle at 50% 46%, rgba(255,126,182,.18), transparent 38%);
+  z-index:0;
+  pointer-events:none;
+}
+body.rose-focus .romance-svg{
+  opacity:.42;
+  filter:blur(.4px) drop-shadow(0 0 14px rgba(255,126,182,.12));
+}
+body.rose-focus .scene-caption{
+  z-index:9;
+  background:rgba(0,0,0,.38);
+  border-color:rgba(255,255,255,.26);
+}
+
+
+/* V17 lighter particles and slower rhythm */
+.petal{
+  opacity:.72;
+  filter:drop-shadow(0 0 8px rgba(255,126,182,.42));
+}
+.scene-caption{
+  font-size:15px;
+  padding:9px 16px;
+}
+
