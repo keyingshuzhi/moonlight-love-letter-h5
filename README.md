@@ -98,12 +98,6 @@ music/
 └── music.wav
 ```
 
-如果需要替换音乐，无需修改代码。将自己的 WAV 音乐文件重命名为 `music.wav`，并放入 `music/` 目录即可。当前 `index.html` 中固定引用：
-
-```html
-<audio id="bgm" src="music/music.wav" loop preload="auto" autoplay playsinline></audio>
-```
-
 后续只需要替换 `music/music.wav` 文件本身，并保持文件名为 `music.wav` 即可。
 
 
